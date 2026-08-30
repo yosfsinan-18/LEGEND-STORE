@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGEND STORE - بازارێ مۆدێرن</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome بۆ نیشانان (Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- سەرێ بەرپەری (Header) -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-crown" style="color: #facc15;"></i>
+            <span>LEGEND STORE</span> <span class="vip-badge">VIP</span>
+        </div>
+        <div class="auth-buttons">
+            <button id="loginBtn" onclick="openAuthModal()">تۆمارکرن / چوونە ژوور</button>
+        </div>
+    </header>
+
+    <!-- ناوەندا سەرەکی (Main Content) -->
+    <main>
+        <!-- پشکا کڕین (Buy Section) -->
+        <section id="buySection" class="content-section active">
+            <h2>لیستا تشت و ئۆتۆمبێلێن بۆ کڕینێ</h2>
+            <div id="productsGrid" class="products-grid">
+                <!-- تشت ل ڤێرە ب ڕێیا JavaScript دێ هاتنە زێدەکرن -->
+            </div>
+        </section>
+
+        <!-- پشکا فرۆتنێ (Sell Section) -->
+        <section id="sellSection" class="content-section">
+            <h2>ئۆتۆمبێلا خۆ بۆ فرۆشتنێ عەرز بکە</h2>
+            <form id="sellForm" onsubmit="postItem(event)">
+                <div class="form-group">
+                    <label>ناڤێ تشتێ/ئۆتۆمبێلی:</label>
+                    <input type="text" id="itemTitle" required placeholder="بۆ نموونە: تۆیۆتا کۆرۆلا 2022">
+                </div>
+
+                <div class="form-group">
+                    <label>وێنە (هەتا 30 وێنە):</label>
+                    <input type="file" id="itemImages" multiple accept="image/*" max="30" onchange="checkImageCount(this)">
+                    <small id="imageCountWarning" style="color: red; display: none;">تەنها دشێی هەتا 30 وێنەیان بار بکەی!</small>
+                </div>
+
+                <div class="form-group">
+                    <label>تێبینی (ڕەوش، کێماسی، و ئەڤێن هەی):</label>
+                    <textarea id="itemNotes" rows="4" required placeholder="تشتێ ئۆتۆمبێلا خۆ ب دلێ خۆ بنڤیسە..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ژمارا مۆبایلا پەیوەندیێ (مەرجە ژ 6 ژمارەیان کێمتر نەبێت):</label>
+                    <input type="text" id="itemPhone" required placeholder="بۆ نموونە: 0750XXXXXXX">
+                </div>
+
+                <button type="submit" class="submit-btn">بەلاڤکرنا تشتێ من</button>
+            </form>
+        </section>
+
+        <!-- پشکا پشتەڤانی (Support Section) -->
+        <section id="supportSection" class="content-section">
+            <h2>پشتەڤانیا LEGEND STORE</h2>
+            <div class="support-card">
+                <i class="fa-solid fa-hand-holding-dollar fa-3x" style="color: #10b981; margin-bottom: 15px;"></i>
+                <h3>هاریکاریا وێب سایتی بکەن</h3>
+                <p>ئەگەر دخوازی پشتەڤانیا مە بکەی دا کو پڕۆژە بەردەوام بیت، دشێی پارەی ڕەوانە بکەی لسەر ژمارا فاست پەی (FIB) یا ل خوارێ:</p>
+                <div class="fib-number-box">
+                    <span>FIB: <strong>07501328262</strong></span>
+                </div>
+                <p class="support-note">سوپاس بۆ پشتەڤانیا تە!</p>
+            </div>
+        </section>
+
+        <!-- پشکا پڕۆفایل (Profile Section) -->
+        <section id="profileSection" class="content-section">
+            <h2>پڕۆفایلا من</h2>
+            <div class="profile-card">
+                <i class="fa-solid fa-user-circle fa-4x" style="color: #3b82f6;"></i>
+                <h3 id="profileName">مێڤان (Guest)</h3>
+                <p id="profileStatus">تۆ هێشتا نەچوویە ژوورڤە.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- نڤیسینا ل بن شاشەیێ (Bottom Navigation Bar) -->
+    <nav class="bottom-nav">
+        <button onclick="switchTab('buySection', this)" class="nav-item active">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>کڕین</span>
+        </button>
+        <button onclick="switchTab('sellSection', this)" class="nav-item">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span>فڕۆتن</span>
+        </button>
+        <button onclick="switchTab('supportSection', this)" class="nav-item">
+            <i class="fa-solid fa-hands-holding-child"></i>
+            <span>پشتەڤانی</span>
+        </button>
+        <button onclick="switchTab('profileSection', this)" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>پڕۆفایل</span>
+        </button>
+    </nav>
+
+    <!-- پەنجەرا توومارکرنێ و چوونە ژوورێ (Auth Modal) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthModal()">&times;</span>
+            
+            <!-- دوو دوگمەیێن سەرەکی (چوونە ژوور و دروستکرن) -->
+            <div class="auth-tabs">
+                <button id="loginTabBtn" class="auth-tab-btn active" onclick="switchAuthMode('login')">چوونە ژوور</button>
+                <button id="registerTabBtn" class="auth-tab-btn" onclick="switchAuthMode('register')">دروستکرن (Sign Up)</button>
+            </div>
+
+            <!-- فرمێ چوونە ژوورێ -->
+            <div id="loginFormContainer" class="auth-form">
+                <h2>چوونە ژوورا حسابێ</h2>
+                <input type="text" id="loginUser" placeholder="ناڤێ بەکارهێنەری">
+                <input type="password" id="loginPass" placeholder="پاسوۆرد">
+                <button onclick="performLogin()" class="submit-btn">چوونە ژوور</button>
+            </div>
+
+            <!-- فرمێ دروستکرنا حسابێ -->
+            <div id="registerFormContainer" class="auth-form" style="display: none;">
+                <h2>دروستکرنا حسابا نوو</h2>
+                <input type="text" id="regUser" placeholder="ناڤێ بەکارهێنەری">
+                <input type="password" id="regPass" placeholder="پاسوۆرد">
+                <input type="text" id="regPhone" placeholder="ژمارا مۆبایلێ بۆ کۆدێ (WhatsApp/SMS)">
+                <button onclick="performRegister()" class="submit-btn">دروستکرن و هنارتنا کۆدێ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
